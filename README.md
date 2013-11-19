@@ -17,6 +17,8 @@ Getting Started: Hardware
 I run Oscar on a [Raspberry Pi][raspberry-pi] under [Raspbian][raspbian]. I use
 [this barcode scanner][scanner-amazon].
 
+Edit by digital-shokunin: Would like to add support of [Adafruit's compact scanner][scanner-adafruit].
+
 That said, there's no reason Oscar shouldn't work with other hardware.
 
 
@@ -40,5 +42,6 @@ the [issues page][oscar-issues] or submit a pull request.
 [raspberry-pi]: http://www.raspberrypi.org/
 [raspbian]: http://www.raspbian.org/
 [scanner-amazon]: http://www.amazon.com/gp/product/B0085707Z8/ref=oh_details_o03_s00_i03?ie=UTF8&psc=1
+[scanner-adafruit]: http://www.adafruit.com/product/1203
 [twitter]: https://twitter.com/danslimmon
 [oscar-issues]: https://github.com/danslimmon/oscar/issues
