@@ -73,9 +73,9 @@ print
 trello_db_board_url = raw_input('Trello DB board URL: ')
 
 # Get the board IDs from their URLs
-m = re.match('/b/([^/])', trello_grocery_board_url)
+m = re.search('/b/([^/]+)', trello_grocery_board_url)
 trello_grocery_board = m.group(1)
-m = re.match('/b/([^/])', trello_db_board_url)
+m = re.search('/b/([^/]+)', trello_db_board_url)
 trello_db_board = m.group(1)
 trello_grocery_list = 'Groceries'
 
@@ -112,7 +112,7 @@ print "And lastly, enter the path to your scanner device. If you don't know"
 print "this and you're using a Raspberry Pi, the default should be fine."
 print
 scanner_device = raw_input('Scanner device [/dev/input/event0]: ')
-if scanner_device = '':
+if scanner_device == '':
     scanner_device = '/dev/input/event0'
 
 
