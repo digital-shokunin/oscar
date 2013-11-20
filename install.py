@@ -16,30 +16,30 @@ def run_command(command):
         print line,
 
 
-print "Let's set up Oscar."
-print
-print "This script is tested on Raspbian. If you're running something else, I'd"
-print "love a pull request to adapt it to your situation!"
-print
+print("Let's set up Oscar.")
+print()
+print("This script is tested on Raspbian. If you're running something else, I'd")
+print("love a pull request to adapt it to your situation!")
+print()
 
 
 ######################################## Initial checks
 if os.getuid() != 0:
-    print "This script should be run as root on the target device. Aborting."
-    print
+    print("This script should be run as root on the target device. Aborting.")
+    print()
     sys.exit(1)
 
 
 ######################################## Digit-Eyes
-print "You need accounts with a few APIs to use Oscar. First of all,"
-print "go to"
-print
-print "    http://www.digit-eyes.com"
-print
-print "and sign up for an account there. This is the database that Oscar uses to"
-print "match barcodes with names of products. When you're ready, enter your"
-print "API credentials. They can be found on the \"My Account\" page."
-print
+print("You need accounts with a few APIs to use Oscar. First of all,")
+print("go to")
+print()
+print("    http://www.digit-eyes.com")
+print()
+print("and sign up for an account there. This is the database that Oscar uses to")
+print("match barcodes with names of products. When you're ready, enter your")
+print("API credentials. They can be found on the \"My Account\" page.")
+print()
 digiteyes_app_key = raw_input('App Key("K" Code): ')
 # Make sure slashes are included:
 digiteyes_app_key = '/' + digiteyes_app_key.strip('/') + '/'
@@ -48,28 +48,28 @@ digiteyes_auth_key = raw_input('Authorization Key ("M" Code): ')
 
 ######################################## Trello
 trello_app_key = '95be613d21fcfa29f3580cc3ea4314cf'
-print
-print "You'll also need a Trello account. You can sign up at:"
-print
-print "    https://trello.com"
-print
-print "Once you have an account, go to this URL:"
-print
-print "    https://trello.com/1/authorize?key={0}&name=oscar&expiration=never&response_type=token&scope=read,write".format(trello_app_key)
-print 
-print "You'll be shown a 'token'; enter it below."
-print
+print()
+print("You'll also need a Trello account. You can sign up at:")
+print()
+print("    https://trello.com")
+print()
+print("Once you have an account, go to this URL:")
+print()
+print("    https://trello.com/1/authorize?key={0}&name=oscar&expiration=never&response_type=token&scope=read,write".format(trello_app_key))
+print()
+print("You'll be shown a 'token'; enter it below.")
+print()
 trello_token = raw_input('Token: ')
-print
-print "Alright, now, we haven't yet found a way to create boards via the Trello"
-print "API, so would you be a dear and create two Trello boards?"
-print
-print "First create a board called 'Groceries', and enter its URL here:"
-print
+print()
+print("Alright, now, we haven't yet found a way to create boards via the Trello")
+print("API, so would you be a dear and create two Trello boards?")
+print()
+print(First create a board called 'Groceries', and enter its URL here:")
+print()
 trello_grocery_board_url = raw_input('Grocery Board URL: ')
-print
-print "And now create a board called 'trello_db', and enter its URL here:"
-print
+print()
+print(And now create a board called 'trello_db', and enter its URL here:")
+print()
 trello_db_board_url = raw_input('Trello DB board URL: ')
 
 # Get the board IDs from their URLs
@@ -81,17 +81,17 @@ trello_grocery_list = 'Groceries'
 
 
 ######################################## Twilio
-print
-print "Oscar can text you when it scans something it doesn't recognize. This"
-print "gives you the opportunity to teach Oscar about items you frequently buy."
-print "To enable this functionality, you need an account with Twilio:"
-print
-print "    https://www.twilio.com/"
-print
-print "If you want to, you can sign up for a Twilio account and enter your"
-print "information below. If not, no sweat: just leave the input blank. You"
-print "can always come back and modify Oscar's config file later."
-print
+print()
+print(Oscar can text you when it scans something it doesn't recognize. This")
+print("gives you the opportunity to teach Oscar about items you frequently buy.")
+print("To enable this functionality, you need an account with Twilio:")
+print()
+print("    https://www.twilio.com/")
+print()
+print("If you want to, you can sign up for a Twilio account and enter your")
+print("information below. If not, no sweat: just leave the input blank. You")
+print("can always come back and modify Oscar's config file later.")
+print()
 twilio_src = raw_input('Twilio number: ')
 if twilio_src != '':
     twilio_sid = raw_input('Twilio SID: ')
@@ -107,21 +107,21 @@ twilio_dest = re.sub('\D', '', twilio_dest)
 
 
 ######################################## Scanner
-print
-print "And lastly, enter the path to your scanner device. If you don't know"
-print "this and you're using a Raspberry Pi, the default should be fine."
-print
+print()
+print("And lastly, enter the path to your scanner device. If you don't know")
+print("this and you're using a Raspberry Pi, the default should be fine.")
+print()
 scanner_device = raw_input('Scanner device [/dev/input/event0]: ')
 if scanner_device == '':
     scanner_device = '/dev/input/event0'
 
 
 ######################################## Dependencies
-print
-print "Now we need to install some dependencies. This can take upwards of an"
-print "hour, since it involves compiling stuff. Ready? Press <enter> when"
-print "you're ready. Press 'Ctrl+C' to cancel."
-print
+print(
+print("Now we need to install some dependencies. This can take upwards of an")
+print("hour, since it involves compiling stuff. Ready? Press <enter> when")
+print("you're ready. Press 'Ctrl+C' to cancel.")
+print(
 raw_input('Press enter when ready: ')
 
 
@@ -225,23 +225,23 @@ sup_oscar_web.close()
 
 run_command('supervisorctl reload')
 
-print
-print '############################################################'
-print
-print 'Done! Your new grocery list can be found at:'
-print
-print '    {0}'.format(grocery_board_url)
-print
-print 'If everything worked, then you should be able to start scanning'
-print 'barcodes with oscar. Check out the logs of the scanner process and'
-print 'the web app, respectively, at'
-print
-print '    /var/lib/supervisor/log/oscar_scan.log'
-print '    /var/lib/supervisor/log/oscar_web.log'
-print
-print 'And report any bugs at https://github.com/danslimmon/oscar/issues.'
-print
-print 'To add new product description keywords, the current method is to'
-print 'edit the oscar_db board directly. This should change soon with #5.'
-print
-print 'Enjoy!'
+print()
+print('############################################################')
+print()
+print('Done! Your new grocery list can be found at:')
+print()
+print('    {0}'.format(grocery_board_url))
+print()
+print('If everything worked, then you should be able to start scanning')
+print('barcodes with oscar. Check out the logs of the scanner process and')
+print('the web app, respectively, at')
+print()
+print('    /var/lib/supervisor/log/oscar_scan.log')
+print('    /var/lib/supervisor/log/oscar_web.log')
+print()
+print('And report any bugs at https://github.com/danslimmon/oscar/issues.')
+print()
+print('To add new product description keywords, the current method is to')
+print('edit the oscar_db board directly. This should change soon with #5.')
+print()
+print('Enjoy!')
