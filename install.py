@@ -41,10 +41,10 @@ print("and sign up for an account there. This is the database that Oscar uses to
 print("match barcodes with names of products. When you're ready, enter your")
 print("API credentials. They can be found on the \"My Account\" page.")
 print()
-digiteyes_app_key = raw_input('App Key("K" Code): ')
+digiteyes_app_key = input('App Key("K" Code): ')
 # Make sure slashes are included:
 digiteyes_app_key = '/' + digiteyes_app_key.strip('/') + '/'
-digiteyes_auth_key = raw_input('Authorization Key ("M" Code): ')
+digiteyes_auth_key = input('Authorization Key ("M" Code): ')
 
 
 ######################################## Trello
@@ -60,18 +60,18 @@ print("    https://trello.com/1/authorize?key={0}&name=oscar&expiration=never&re
 print()
 print("You'll be shown a 'token'; enter it below.")
 print()
-trello_token = raw_input('Token: ')
+trello_token = input('Token: ')
 print()
 print("Alright, now, we haven't yet found a way to create boards via the Trello")
 print("API, so would you be a dear and create two Trello boards?")
 print()
 print("First create a board called 'Groceries', and enter its URL here:")
 print()
-trello_grocery_board_url = raw_input('Grocery Board URL: ')
+trello_grocery_board_url = input('Grocery Board URL: ')
 print()
 print("And now create a board called 'trello_db', and enter its URL here:")
 print()
-trello_db_board_url = raw_input('Trello DB board URL: ')
+trello_db_board_url = input('Trello DB board URL: ')
 
 # Get the board IDs from their URLs
 m = re.search('/b/([^/]+)', trello_grocery_board_url)
@@ -93,11 +93,11 @@ print("If you want to, you can sign up for a Twilio account and enter your")
 print("information below. If not, no sweat: just leave the input blank. You")
 print("can always come back and modify Oscar's config file later.")
 print()
-twilio_src = raw_input('Twilio number: ')
+twilio_src = input('Twilio number: ')
 if twilio_src != '':
-    twilio_sid = raw_input('Twilio SID: ')
-    twilio_token = raw_input('Twilio token: ')
-    twilio_dest = raw_input('Destination number (the number you want texted): ')
+    twilio_sid = input('Twilio SID: ')
+    twilio_token = input('Twilio token: ')
+    twilio_dest = input('Destination number (the number you want texted): ')
 else:
     twilio_sid = ''
     twilio_token = ''
@@ -112,7 +112,7 @@ print()
 print("And lastly, enter the path to your scanner device. If you don't know")
 print("this and you're using a Raspberry Pi, the default should be fine.")
 print()
-scanner_device = raw_input('Scanner device [/dev/input/event0]: ')
+scanner_device = input('Scanner device [/dev/input/event0]: ')
 if scanner_device == '':
     scanner_device = '/dev/input/event0'
 
@@ -123,7 +123,7 @@ print("Now we need to install some dependencies. This can take upwards of an")
 print("hour, since it involves compiling stuff. Ready? Press <enter> when")
 print("you're ready. Press 'Ctrl+C' to cancel.")
 print()
-raw_input('Press enter when ready: ')
+input('Press enter when ready: ')
 
 
 ######################################## oscar_scan dependencies
