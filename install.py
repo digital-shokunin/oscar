@@ -13,7 +13,8 @@ import json
 def run_command(command):
     p = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     for line in iter(p.stdout.readline, ''):
-        print line,
+        print (line,)
+
 
 
 print("Let's set up Oscar.")
@@ -64,11 +65,11 @@ print()
 print("Alright, now, we haven't yet found a way to create boards via the Trello")
 print("API, so would you be a dear and create two Trello boards?")
 print()
-print(First create a board called 'Groceries', and enter its URL here:")
+print("First create a board called 'Groceries', and enter its URL here:")
 print()
 trello_grocery_board_url = raw_input('Grocery Board URL: ')
 print()
-print(And now create a board called 'trello_db', and enter its URL here:")
+print("And now create a board called 'trello_db', and enter its URL here:")
 print()
 trello_db_board_url = raw_input('Trello DB board URL: ')
 
@@ -82,7 +83,7 @@ trello_grocery_list = 'Groceries'
 
 ######################################## Twilio
 print()
-print(Oscar can text you when it scans something it doesn't recognize. This")
+print("Oscar can text you when it scans something it doesn't recognize. This")
 print("gives you the opportunity to teach Oscar about items you frequently buy.")
 print("To enable this functionality, you need an account with Twilio:")
 print()
@@ -117,11 +118,11 @@ if scanner_device == '':
 
 
 ######################################## Dependencies
-print(
+print()
 print("Now we need to install some dependencies. This can take upwards of an")
 print("hour, since it involves compiling stuff. Ready? Press <enter> when")
 print("you're ready. Press 'Ctrl+C' to cancel.")
-print(
+print()
 raw_input('Press enter when ready: ')
 
 
