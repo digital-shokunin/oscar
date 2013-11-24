@@ -6,7 +6,7 @@ import select
 import socket
 import random
 import json
-import urllib2
+import urllib
 import hashlib
 import hmac
 import base64
@@ -54,7 +54,7 @@ class UPCAPI:
         
            `upc`: A string containing the UPC."""
         url = self._url(upc)
-        json_blob = urllib2.urlopen(url).read()
+        json_blob = urllib.urlopen(url).read()
         return json.loads(json_blob)['description']
 
 
@@ -176,7 +176,7 @@ while True:
     try:
         desc = u.get_description(barcode)
         print("Received description '{0}' for barcode {1}".format(desc, repr(barcode)))
-    except urllib2.HTTPError, e:
+    except urllib.HTTPError as e:
         if 'UPC/EAN code invalid' in e.msg:
             print("Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode)))
             opp = create_barcode_opp(trello_db, barcode)
