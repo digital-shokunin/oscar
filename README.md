@@ -11,6 +11,15 @@ Here's a video about it!
 </a>
 
 
+Python3 Branch (Digital-Shokunin)
+-----
+
+I have forked this project in order to maintain a version that is Python 3 compatible (ArchLinux ARM users). 
+
+To use this branch:
+
+     git clone -b python3 https://github.com/digital-shokunin/oscar.git
+
 Getting Started: Hardware
 -----
 
