@@ -13,8 +13,7 @@ import json
 def run_command(command):
     p = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     for line in iter(p.stdout.readline, ''):
-        print (line,)
-
+        print (line, end=' ')
 
 
 print("Let's set up Oscar.")
