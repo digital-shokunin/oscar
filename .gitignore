@@ -5,3 +5,4 @@ node_modules
 bin/
 include/
 lib/python2.7/
+.idea/
