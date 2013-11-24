@@ -10,6 +10,14 @@ Here's a video about it!
 <img src="http://img.youtube.com/vi/9_MNOOgFDg4/0.jpg" alt="Oscar Demo" width="240" height="180" border="10" />
 </a>
 
+Python 3 Branch
+-----
+I maintain a branch of this software for Python 3 compatibility (ex: Arch Linux ARM users)
+
+To use this version:
+
+     git clone -b python3 https://github.com/digital-shokunin/oscar.git
+
 
 Getting Started: Hardware
 -----
