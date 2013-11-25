@@ -40,8 +40,6 @@ print("match barcodes with names of products. When you're ready, enter your")
 print("API credentials. They can be found on the \"My Account\" page.")
 print()
 digiteyes_app_key = input('App Key("K" Code): ')
-# Make sure slashes are included:
-digiteyes_app_key = '/' + digiteyes_app_key.strip('/') + '/'
 digiteyes_auth_key = input('Authorization Key ("M" Code): ')
 
 
@@ -67,7 +65,7 @@ print("First create a board called 'Groceries', and enter its URL here:")
 print()
 trello_grocery_board_url = input('Grocery Board URL: ')
 print()
-print("And now create a board called 'trello_db', and enter its URL here:")
+print("And now create a board called 'oscar_db', and enter its URL here:")
 print()
 trello_db_board_url = input('Trello DB board URL: ')
 
