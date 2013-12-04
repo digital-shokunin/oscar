@@ -1,0 +1,12 @@
+[Unit]
+Description=Web sevrer for oscar.
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/node --debug /var/oscar/web/app.js
+Restart=on-abort
+WorkingDirectory=/var/oscar/web
+
+[Install]
+WantedBy=multi-user.target

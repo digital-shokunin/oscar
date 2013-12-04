@@ -9,6 +9,8 @@
     "express": "3.4.4",
     "jade": "*",
     "node-trello": "*",
-    "dot": ">=1.0.2"
+    "dot": ">=1.0.2",
+    "express-dot": "*",
+    "js-yaml": "*"
   }
 }

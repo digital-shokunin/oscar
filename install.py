@@ -3,10 +3,17 @@
 
    https://github.com/danslimmon/oscar"""
 
+import glob
 import os
+import platform
+import shutil
 import sys
 import subprocess
 import re
+
+dist = platform.dist()[0]
+if not dist and os.path.exists('/etc/arch-release'):
+  dist = 'arch'
 
 
 def run_command(command):
@@ -15,12 +22,30 @@ def run_command(command):
         print (line, end=' ')
 
 
+def package_install(package):
+  """Installs a package using the default package manager for the distro.
+  On Arch this will use pacman, on Ubuntu apt-get."""
+
+  if dist == 'arch':
+    package = re.sub('^python-', 'python2-', package)
+    command = 'pacman -S'
+  else:
+    command = 'apt-get install'
+
+  run_command('{cmd} {pkg}'.format(cmd=command, pkg=package))
+
+
 print("Let's set up Oscar.")
 print()
 print("This script is tested on Raspbian. If you're running something else, I'd")
 print("love a pull request to adapt it to your situation!")
 print()
 
+
+######################################## Dependencies of both
+if dist != 'arch':
+  run_command('apt-get update')
+  run_command('apt-get install git supervisor')
 
 ######################################## Initial checks
 if os.getuid() != 0:
@@ -123,23 +148,28 @@ input('Press enter when ready: ')
 
 
 ######################################## oscar_scan dependencies
+package_install('python-setuptools')
 run_command('easy_install pip')
-run_command('pip install PyYAML trello')
+run_command('pip install PyYAML trello twilio')
 
 
 ######################################## oscar_web dependencies
-run_command('wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz')
-run_command('tar xzvf node-v0.10.22.tar.gz')
-os.chdir('node-v0.10.22')
-run_command('./configure')
-run_command('make')
-run_command('make install')
-os.chdir('..')
+if dist == 'arch':
+  package_install('nodejs')
+else:
+  run_command('wget http://nodejs.org/dist/v0.10.22/node-v0.10.22.tar.gz')
+  run_command('tar xzvf node-v0.10.22.tar.gz')
+  os.chdir('node-v0.10.22')
+  run_command('./configure')
+  run_command('make')
+  run_command('make install')
+  os.chdir('..')
 
 
 ######################################## Dependencies of both
-run_command('apt-get update')
-run_command('apt-get install git supervisor')
+if dist != 'arch':
+  run_command('apt-get update')
+  run_command('apt-get install git supervisor')
 
 
 ######################################## Oscar itself
@@ -203,13 +233,27 @@ digiteyes_auth_key: '{digiteyes_auth_key}'
 '''.format(**locals()))
 oscar_yaml.close()
 
-sup_oscar_scan = open('/etc/supervisor/conf.d/oscar_scan.conf', 'w')
-sup_oscar_scan.write('''[program:oscar_scan]
+if dist == 'arch':
+  files = glob.glob('/var/oscar/systemd/*.service')
 
-command=python /var/oscar/scan.py
-stdout_logfile=/var/log/supervisor/oscar_scan.log
-redirect_stderr=true''')
-sup_oscar_scan.close()
+  # Copy the systemd files
+  for file_name in files:
+    shutil.copy(file_name, '/usr/lib/systemd/system/')
+  run_command('systemctl daemon-reload')
+
+  # start the services
+  for file_name in files:
+    service = os.path.basename(file_name).split('.')[0]
+    run_command('systemctl enable {service}'.format(service=service))
+    run_command('systemctl start {service}'.format(service=service))
+else:
+  sup_oscar_scan = open('/etc/supervisor/conf.d/oscar_scan.conf', 'w')
+  sup_oscar_scan.write('''[program:oscar_scan]
+
+  command=python /var/oscar/scan.py
+  stdout_logfile=/var/log/supervisor/oscar_scan.log
+  redirect_stderr=true''')
+  sup_oscar_scan.close()
 
 sup_oscar_web = open('/etc/supervisor/conf.d/oscar_web.conf', 'w')
 sup_oscar_scan.write('''[program:oscar_web]

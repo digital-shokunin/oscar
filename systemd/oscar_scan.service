@@ -1,0 +1,11 @@
+[Unit]
+Description=Scan listener for oscar.
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=python2 /var/oscar/scan.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
