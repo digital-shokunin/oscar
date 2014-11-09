@@ -14,6 +14,8 @@ import base64
 import trello
 from twilio.rest import TwilioRestClient
 
+import smtplib
+
 from lib import trellodb
 from lib import conf
 
@@ -75,7 +77,7 @@ def opp_url(opp):
     return 'http://{0}/learn-barcode/{1}'.format(local_ip(), opp['opp_id'])
 
 
-def create_barcode_opp(trello_db, barcode):
+def create_barcode_opp(trello_db, barcode, desc=""):
     """Creates a learning opportunity for the given barcode and writes it to Trello.
     
        Returns the dict."""
@@ -83,6 +85,7 @@ def create_barcode_opp(trello_db, barcode):
         'type': 'barcode',
         'opp_id': generate_opp_id(),
         'barcode': barcode,
+        'desc': desc,
         'created_dt': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     }
 
@@ -91,11 +94,35 @@ def create_barcode_opp(trello_db, barcode):
 
 
 def publish_barcode_opp(opp):
+    message = '''Hi! Oscar here. You scanned a code I didn't recognize for a "{1}". Care to fill me in?  {0}'''.format(opp_url(opp), opp['desc'])
+    subject = '''Didn't Recognize Barcode'''
+    communication_method = conf.get()['communication_method']
+    if communication_method == 'email':
+        send_via_email(message, subject)
+    else:
+        send_via_twilio(message)
+
+def send_via_twilio(msg):
     client = TwilioRestClient(conf.get()['twilio_sid'], conf.get()['twilio_token'])
-    message = client.sms.messages.create(body='''Hi! Oscar here. You scanned a code I didn't recognize. Care to fill me in?  {0}'''.format(opp_url(opp)),
+    message = client.sms.messages.create(body=msg,
                                          to='+{0}'.format(conf.get()['twilio_dest']),
                                          from_='+{0}'.format(conf.get()['twilio_src']))
- 
+
+def send_via_email(msg, subject):
+    to = conf.get()['email_dest']
+    gmail_user = conf.get()['gmail_user'] 
+    gmail_pwd = conf.get()['gmail_password']
+    smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+    header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject: ' + subject + ' \n'
+    print '\nSending email...\n'
+    message = header + '\n ' + msg +' \n\n'
+    smtpserver.sendmail(gmail_user, to, message)
+    print 'Email sent.'
+    smtpserver.close()
 
 def match_barcode_rule(trello_db, barcode):
     """Finds a barcode rule matching the given barcode.
@@ -130,10 +157,10 @@ def add_grocery_item(trello_api, item):
 
     # Add item if it's not there already
     if item not in card_names:
-        print("Adding '{0}' to grocery list".format(item))
+        print "Adding '{0}' to grocery list".format(item)
         trello_api.lists.new_card(grocery_list['id'], item)
     else:
-        print("Item '{0}' is already on the grocery list; not adding".format(item))
+        print "Item '{0}' is already on the grocery list; not adding".format(item)
 
 
 trello_api = trello.TrelloApi(conf.get()['trello_app_key'])
@@ -142,7 +169,7 @@ trello_db = trellodb.TrelloDB(trello_api, conf.get()['trello_db_board'])
 
 f = open(conf.get()['scanner_device'], 'rb')
 while True:
-    print('Waiting for scanner data')
+    print 'Waiting for scanner data'
 
     # Wait for binary data from the scanner and then read it
     scan_complete = False
@@ -163,7 +190,7 @@ while True:
  
     # Parse the binary data as a barcode
     barcode = parse_scanner_data(scanner_data)
-    print("Scanned barcode '{0}'".format(barcode))
+    print "Scanned barcode '{0}'".format(barcode)
 
     # Match against barcode rules
     barcode_rule = match_barcode_rule(trello_db, barcode)
@@ -175,18 +202,18 @@ while True:
     u = UPCAPI(conf.get()['digiteyes_app_key'], conf.get()['digiteyes_auth_key'])
     try:
         desc = u.get_description(barcode)
-        print("Received description '{0}' for barcode {1}".format(desc, repr(barcode)))
+        print "Received description '{0}' for barcode {1}".format(desc, repr(barcode))
     except urllib2.HTTPError, e:
         if 'UPC/EAN code invalid' in e.msg:
-            print("Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode)))
-            opp = create_barcode_opp(trello_db, barcode)
-            print("Publishing learning opportunity via SMS")
+            print "Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode))
+            opp = create_barcode_opp(trello_db, barcode, desc)
+            print "Publishing learning opportunity"
             publish_barcode_opp(opp)
             continue
         elif 'Not found' in e.msg:
-            print("Barcode {0} not found in UPC database; creating learning opportunity".format(repr(barcode)))
+            print "Barcode {0} not found in UPC database; creating learning opportunity".format(repr(barcode))
             opp = create_barcode_opp(trello_db, barcode)
-            print("Publishing learning opportunity via SMS")
+            print "Publishing learning opportunity via SMS"
             publish_barcode_opp(opp)
             continue
         else:
@@ -198,4 +225,4 @@ while True:
         add_grocery_item(trello_api, desc_rule['item'])
         continue
 
-    print("Don't know what to add for product description '{0}'".format(desc))
+    print "Don't know what to add for product description '{0}'".format(desc)
