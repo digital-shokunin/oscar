@@ -207,7 +207,7 @@ while True:
         if 'UPC/EAN code invalid' in e.msg:
             print("Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode)))
             opp = create_barcode_opp(trello_db, barcode, desc)
-            print "Publishing learning opportunity"
+            print("Publishing learning opportunity")
             publish_barcode_opp(opp)
             continue
         elif 'Not found' in e.msg:
