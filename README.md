@@ -27,8 +27,10 @@ I run Oscar on a [Raspberry Pi][raspberry-pi] under [Raspbian][raspbian]. I use
 [this barcode scanner][scanner-amazon].
 
 Edit by digital-shokunin: Also supports [Adafruit's compact scanner][scanner-adafruit] which is much more convenient and easier to place somewhere. There is also a [case I designed for it that can be 3D printed][case].
-<a href="http://youtu.be/jffxFTm9Ads" target="_blank">
 
+<a href="http://youtu.be/jffxFTm9Ads" target="_blank">
+<img src="https://i.ytimg.com/vi/jffxFTm9Ads/2.jpg" alt="Oscar Small Barcode reader demo" width="240" height="180" border="10" />
+</a>
 That said, there's no reason Oscar shouldn't work with other hardware.
 
 
