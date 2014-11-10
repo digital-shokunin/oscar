@@ -31,6 +31,7 @@ Edit by digital-shokunin: Also supports [Adafruit's compact scanner][scanner-ada
 <a href="http://youtu.be/jffxFTm9Ads" target="_blank">
 <img src="https://i.ytimg.com/vi/jffxFTm9Ads/2.jpg" alt="Oscar Small Barcode reader demo" width="240" height="180" border="10" />
 </a>
+
 That said, there's no reason Oscar shouldn't work with other hardware.
 
 
