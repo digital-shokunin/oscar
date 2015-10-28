@@ -77,7 +77,11 @@ def opp_url(opp):
     return 'http://{0}/learn-barcode/{1}'.format(local_ip(), opp['opp_id'])
 
 
+<<<<<<< HEAD
 def create_barcode_opp(trello_db, barcode, desc=""):
+=======
+def create_barcode_opp(trello_db, barcode, desc=''):
+>>>>>>> upstream/master
     """Creates a learning opportunity for the given barcode and writes it to Trello.
     
        Returns the dict."""
@@ -118,10 +122,17 @@ def send_via_email(msg, subject):
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_pwd)
     header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject: ' + subject + ' \n'
+<<<<<<< HEAD
     print('\nSending email...\n')
     message = header + '\n ' + msg +' \n\n'
     smtpserver.sendmail(gmail_user, to, message)
     print('Email sent.')
+=======
+    print '\nSending email...\n'
+    message = header + '\n ' + msg +' \n\n'
+    smtpserver.sendmail(gmail_user, to, message)
+    print 'Email sent.'
+>>>>>>> upstream/master
     smtpserver.close()
 
 def match_barcode_rule(trello_db, barcode):
@@ -205,21 +216,37 @@ while True:
         print("Received description '{0}' for barcode {1}".format(desc, repr(barcode)))
     except urllib2.HTTPError, e:
         if 'UPC/EAN code invalid' in e.msg:
+<<<<<<< HEAD
             print("Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode)))
+=======
+            print "Barcode {0} not recognized as a UPC; creating learning opportunity".format(repr(barcode))
+>>>>>>> upstream/master
             try:
                 opp = create_barcode_opp(trello_db, barcode, desc)
             except:
                 opp = create_barcode_opp(trello_db, barcode)
+<<<<<<< HEAD
             print("Publishing learning opportunity")
             publish_barcode_opp(opp)
             continue
         elif 'Not found' in e.msg:
             print("Barcode {0} not found in UPC database; creating learning opportunity".format(repr(barcode)))
+=======
+            print "Publishing learning opportunity"
+            publish_barcode_opp(opp)
+            continue
+        elif 'Not found' in e.msg:
+            print "Barcode {0} not found in UPC database; creating learning opportunity".format(repr(barcode))
+>>>>>>> upstream/master
             try:
                 opp = create_barcode_opp(trello_db, barcode, desc)
             except:
                 opp = create_barcode_opp(trello_db, barcode)
+<<<<<<< HEAD
             print("Publishing learning opportunity via SMS")
+=======
+            print "Publishing learning opportunity via SMS"
+>>>>>>> upstream/master
             publish_barcode_opp(opp)
             continue
         else:
